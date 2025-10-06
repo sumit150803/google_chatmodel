@@ -1,0 +1,23 @@
+from langchain_google_genai.chat_models import ChatGoogleGenerativeAI
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# --- Prompt Template Definition ---
+chat_prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a helpful assistant thaat writes a song about {topic}."),
+    ("user","wriite a song about{topic}")
+])
+
+# --- Model Initialization ---
+model_google = ChatGoogleGenerativeAI(model="gemini-2.5-pro")
+
+output_parser = StrOutputParser()
+
+chain = chat_prompt | model_google | output_parser
+# --- Invocation ---
+song=chain.invoke({'topic':"a horse who loves to dance"})
+
+print(song)
