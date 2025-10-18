@@ -1,0 +1,21 @@
+from langchain_google_genai import GoogleGenerativeAI
+from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
+from dotenv import load_dotenv
+
+load_dotenv()
+
+model=GoogleGenerativeAI(model="gemini-2.5-pro", temperature=0)
+
+prompt=ChatPromptTemplate.from_messages([
+    ("system", "You are a profesional {field} and you have been asked to provide a detailed research paper on the following topic. Please include an introduction, main body, and conclusion. Make sure to cite relevant sources and provide a bibliography at the end."),
+    ("user", "{topic}"),
+
+])
+
+formatted_prompt = prompt.format_messages( field="researcher", topic="The impact of ai in agricultural fields  ")
+
+response = model.invoke(formatted_prompt)
+print(response)
+print("\nResponse from Model:")
+output = model.invoke(response)
+print(output)
